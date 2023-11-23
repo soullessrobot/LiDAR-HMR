@@ -1,6 +1,6 @@
 # LiDAR-HMR: 3D Human Mesh Recovery from LiDAR
 
-### [Paper](https://arxiv.org/pdf/) 
+### [Paper](https://arxiv.org/pdf/2311.11971) 
 
 > LiDAR-HMR: 3D Human Mesh Recovery from LiDAR
 
@@ -48,7 +48,7 @@ If you find this project helpful, please consider citing the following paper:
 @article{fan2023lidar,
     title={LiDAR-HMR: 3D Human Mesh Recovery from LiDAR},
     author={Fan, Bohao and Zheng, Wenzhao and Feng, Jianjiang and Zhou, Jie},
-    journal={arXiv preprint arXiv:},
+    journal={arXiv preprint arXiv:2311.11971},
     year={2023}
 }
 ```
