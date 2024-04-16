@@ -43,12 +43,19 @@ Install the [Point Transformer-V2](https://github.com/Pointcept/PointTransformer
 
 Code:
 We have implemented or modified several 3D HPE works based on point cloud including:
+
 V2V-PoseNet: https://arxiv.org/abs/1711.07399
+
 LPFormer: https://arxiv.org/abs/2306.12525
+
 HybrIK: https://arxiv.org/abs/2011.14672
+
 SAHSR: https://openaccess.thecvf.com/content_ICCV_2019/html/Jiang_Skeleton-Aware_3D_Human_Shape_Reconstruction_From_Point_Clouds_ICCV_2019_paper.html
+
 VoteHMR: https://arxiv.org/abs/2110.08729
+
 LiDARCap: https://arxiv.org/abs/2203.14698
+
 Pose2Mesh: https://arxiv.org/abs/2008.09047
 
 The corresponding train and test codes are in the 'scripts' folder.
