@@ -1,0 +1,8 @@
+NETWORK:
+  pose_dim: 24
+  VOTE:  True
+  REFINE: True
+
+LOSS:
+  VOTE_LOSS: True
+  PRIOR_LOSS: False

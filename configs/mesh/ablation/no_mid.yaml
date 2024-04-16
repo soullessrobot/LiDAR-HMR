@@ -1,0 +1,7 @@
+NETWORK:
+  USE_PCD: True
+  UP_TYPE:  graph_mlp
+  ADJ_TYPE: laplacian
+
+LOSS:
+  MID_LOSS: False

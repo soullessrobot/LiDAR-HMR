@@ -1,0 +1,13 @@
+# NETWORK:
+#   USE_PCD: True
+#   UP_TYPE:  graph_mlp
+#   ADJ_TYPE: laplacian
+
+NETWORK:
+  pose_dim: 15
+  VOTE:  True
+  REFINE: True
+
+LOSS:
+  VOTE_LOSS: True
+  PRIOR_LOSS: True

@@ -1,0 +1,10 @@
+NETWORK:
+  USE_PCD: True
+  UP_TYPE:  graph_mlp
+  ADJ_TYPE: adj
+  PCD_LAST: True
+  PRN_TRAINED: True
+
+LOSS:
+  MID_LOSS: True
+  MID_EDGE_LOSS: True

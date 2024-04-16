@@ -1,0 +1,4 @@
+NETWORK:
+  USE_PCD: True
+  UP_TYPE:  upsamle
+  ADJ_TYPE: laplacian

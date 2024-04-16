@@ -1,0 +1,4 @@
+NETWORK:
+  USE_PCD: True
+  UP_TYPE:  graph_mlp
+  ADJ_TYPE: adj

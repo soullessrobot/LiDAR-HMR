@@ -31,15 +31,45 @@ In recent years, point cloud perception tasks have been garnering increasing att
 
 ![visualization](./assets/visualization.png)
 
-
-
 ## Code
+Preparation:
+Downloading the SMPL-X model weights from [this website](https://smpl-x.is.tue.mpg.de/) into 'smplx_models' folder.
 
-Coming soon!
+Installation:
+```
+pip install -r requirements.txt
+```
+Install the [Point Transformer-V2](https://github.com/Pointcept/PointTransformerV2) and [ChamferDistancePytorch](https://github.com/ThibaultGROUEIX/ChamferDistancePytorch) following their official documents.
 
+Code:
+We have implemented or modified several 3D HPE works based on point cloud including:
+V2V-PoseNet: https://arxiv.org/abs/1711.07399
+LPFormer: https://arxiv.org/abs/2306.12525
+HybrIK: https://arxiv.org/abs/2011.14672
+SAHSR: https://openaccess.thecvf.com/content_ICCV_2019/html/Jiang_Skeleton-Aware_3D_Human_Shape_Reconstruction_From_Point_Clouds_ICCV_2019_paper.html
+VoteHMR: https://arxiv.org/abs/2110.08729
+LiDARCap: https://arxiv.org/abs/2203.14698
+Pose2Mesh: https://arxiv.org/abs/2008.09047
+
+The corresponding train and test codes are in the 'scripts' folder.
+
+Training:
+Edit the corresponding path and variable in the training files.
+PRN training:
+```
+python scripts/pct/train_pct.py --dataset sloper4d --cfg configs/pose/pose_15.yaml
+```
+LiDAR_HMR training:
+```
+python scripts/lidar_hmr/train_lidarhmr.py --dataset sloper4d --cfg configs/mesh/sloper4d.yaml --prn_state_dict /path/to/your/file
+```
+LiDAR_HMR testing:
+```
+python scripts/lidar_hmr/test_lidarhmr.py --dataset sloper4d --cfg configs/mesh/sloper4d.yaml --state_dict /path/to/your/file
+```
 ## Related Projects
 
-Our code is based on [Human-M3-Dataset](https://github.com/soullessrobot/Human-M3-Dataset).
+Our code is based on [Mesh Graphormer](https://arxiv.org/abs/2104.00272), [Point Transformer-V2](https://github.com/Pointcept/PointTransformerV2), and [HybrIK](https://arxiv.org/abs/2011.14672).
 
 ## Citation
 
