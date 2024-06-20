@@ -74,6 +74,8 @@ LiDAR_HMR testing:
 ```
 python scripts/lidar_hmr/test_lidarhmr.py --dataset sloper4d --cfg configs/mesh/sloper4d.yaml --state_dict /path/to/your/file
 ```
+## Pretrained Models
+[Download link](https://cloud.tsinghua.edu.cn/d/bd9ce4827f164591893d/)
 ## Related Projects
 
 Our code is based on [Mesh Graphormer](https://arxiv.org/abs/2104.00272), [Point Transformer-V2](https://github.com/Pointcept/PointTransformerV2), and [HybrIK](https://arxiv.org/abs/2011.14672).
