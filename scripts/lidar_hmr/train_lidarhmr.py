@@ -28,7 +28,7 @@ from thop import profile, clever_format
 from models.pct_config import pct_config, update_pct_config
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Train keypoints network')
+    parser = argparse.ArgumentParser(description='Train LiDAR-HMR')
     parser.add_argument(
         '--dataset', required=True, type=str)
     parser.add_argument(
@@ -40,7 +40,7 @@ def parse_args():
     parser.add_argument(
         '--pmg_state_dict', default='', required=False, type=str)
     parser.add_argument(
-        '--cfg', default='configs/mesh/adj.yaml', required=False, type=str)
+        '--cfg', default='configs/mesh/sloper4d.yaml', required=False, type=str)
     args, rest = parser.parse_known_args()
     return args
 
@@ -150,7 +150,7 @@ def test(model, dataloader):
 args = parse_args()
 setup_seed(10)
 dataset_task = args.dataset #'sloper4d', 'waymov2', 'collect'
-model_type = 'meshik' #'lpformer', 'v2v'
+model_type = 'lidar_hmr' #'lpformer', 'v2v'
 if dataset_task == 'sloper4d':
     scene_train = [
             'seq002_football_001',
@@ -160,6 +160,7 @@ if dataset_task == 'sloper4d':
             'seq008_running_001'
         ]
     scene_test = ['seq009_running_002']
+    #Path to your own dataset
     dataset_root = '/Extra/fanbohao/posedataset/PointC/sloper4d/'
     train_dataset = SLOPER4D_Dataset(dataset_root, scene_train, is_train = True, dataset_path = './save_data/sloper4d/',
                                 return_torch=False, device = 'cuda',
@@ -171,6 +172,7 @@ if dataset_task == 'sloper4d':
 
 elif dataset_task == 'waymov2':
     dataset_root = '/Extra/fanbohao/posedataset/PointC/Waymo/resave_files/'
+    #Path to your own dataset
     train_dataset = WAYMOV2_Dataset(dataset_root, is_train = True, dataset_path = './save_data/waymov2/',
                                 return_torch=True, device = 'cuda',
                                 fix_pts_num=True, augmentation = True)

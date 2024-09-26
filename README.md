@@ -76,6 +76,11 @@ python scripts/lidar_hmr/test_lidarhmr.py --dataset sloper4d --cfg configs/mesh/
 ```
 ## Pretrained Models
 [Download link](https://cloud.tsinghua.edu.cn/d/bd9ce4827f164591893d/)
+
+## Prepare Data Files for Waymov2 Dataset
+The mesh groundtruths of the Waymo-v2 dataset are acquired utilizting human pose annotations and point clouds. Download the saved pkl files and move them into ./save_data folder (create one if not exists.) for training and testing in the Waymo-v2 dataset.
+[Download link](https://cloud.tsinghua.edu.cn/d/0840c820c33745e58aa7/)
+
 ## Related Projects
 
 Our code is based on [Mesh Graphormer](https://arxiv.org/abs/2104.00272), [Point Transformer-V2](https://github.com/Pointcept/PointTransformerV2), and [HybrIK](https://arxiv.org/abs/2011.14672).

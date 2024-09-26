@@ -48,7 +48,7 @@ class lidar_Dataset(Dataset):
             dist2: (B,M) torch float32 tensor
             idx2: (B,M) torch int64 tensor
         """
-        # pc1, pc2 = torch.tensor(pc1), torch.tensor(pc2)
+        pc1, pc2 = torch.tensor(pc1), torch.tensor(pc2)
         if len(pc1.shape) == 2:
             pc1, pc2 = pc1.unsqueeze(0), pc2.unsqueeze(0)
         N = pc1.shape[1]
@@ -128,11 +128,11 @@ class lidar_Dataset(Dataset):
             root = torch.mean(human_points.squeeze(), dim = 0)
 
         smpl_joints, root = torch.tensor(smpl_joints).unsqueeze(0), root
-        pc_dist = torch.tensor(sam_data['pc_dist'])
+        pc_dist = torch.tensor(sam_data['pc_dist']) # (N_p,N_k)
         # print(human_points.shape, pc_dist.shape)
-        min_dist, idx1 = torch.min(pc_dist, dim=1) # (B,N)
+        min_dist, idx1 = torch.min(pc_dist, dim=1)
         vis_label = min_dist < 0.25 #[N]
-        seg_label = (torch.ones([human_points.shape[1]]) * len(self.JOINTS_IDX)).long() #[M]
+        seg_label = (torch.ones([human_points.shape[1]]) * len(self.JOINTS_IDX)).long() #[N_p]
         seg_label[vis_label] = idx1.squeeze(0)[vis_label].cpu()
 
         vis_label_kpts = torch.min(pc_dist, dim = 0)[0] < 0.25
