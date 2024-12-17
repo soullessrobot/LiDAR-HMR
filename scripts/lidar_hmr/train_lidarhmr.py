@@ -244,9 +244,9 @@ for epoch in range(epoch_now + 1, 50): #30
     if epoch == 10 or epoch == 20 or epoch == 40:
         for p in optimizer.param_groups:
             p['lr'] *= 0.5
-    # if epoch == 30:
-    #    for p in optimizer.param_groups:
-    #        p['lr'] *= 4
+    if epoch == 30:
+       for p in optimizer.param_groups:
+           p['lr'] *= 4
     train(model, train_loader, optimizer, epoch)
     state = {'net':model.state_dict(), 'optimizer':optimizer.state_dict(), 'epoch':epoch}
     mpjpe, precision, mpvpe, mpee, mpere = test(model, test_loader)
