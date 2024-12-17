@@ -75,7 +75,7 @@ LiDAR_HMR testing:
 python scripts/lidar_hmr/test_lidarhmr.py --dataset sloper4d --cfg configs/mesh/sloper4d.yaml --state_dict /path/to/your/file
 ```
 ## Pretrained Models
-[Download link](https://cloud.tsinghua.edu.cn/d/bd9ce4827f164591893d/)
+[Download link](https://cloud.tsinghua.edu.cn/d/937a4af3a7cb4c5b8e89/)
 
 ## Prepare Data Files for Waymov2 Dataset
 The mesh groundtruths of the Waymo-v2 dataset are acquired utilizting human pose annotations and point clouds. Download the saved pkl files and move them into ./save_data folder (create one if not exists.) for training and testing in the Waymo-v2 dataset.
