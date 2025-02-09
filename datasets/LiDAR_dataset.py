@@ -12,6 +12,8 @@ import cv2
 import pickle
 import glob
 from tqdm import tqdm
+from torch import Tensor
+from geometry import rotation_matrix_to_angle_axis, batch_rodrigues
 
 class lidar_Dataset(Dataset):
     def __init__(self, is_train = True,
@@ -103,7 +105,7 @@ class lidar_Dataset(Dataset):
         human_points += trans
         smpl_joints += trans
         global_trans += trans
-        return human_points, smpl_joints, global_trans, smpl_verts
+        return human_points, smpl_joints, global_trans, smpl_verts, angle
 
     def __getitem__(self, ind):
         sam_data = self.valid_hkps[ind * self.interval]
@@ -129,7 +131,6 @@ class lidar_Dataset(Dataset):
 
         smpl_joints, root = torch.tensor(smpl_joints).unsqueeze(0), root
         pc_dist = torch.tensor(sam_data['pc_dist']) # (N_p,N_k)
-        # print(human_points.shape, pc_dist.shape)
         min_dist, idx1 = torch.min(pc_dist, dim=1)
         vis_label = min_dist < 0.25 #[N]
         seg_label = (torch.ones([human_points.shape[1]]) * len(self.JOINTS_IDX)).long() #[N_p]
@@ -151,9 +152,16 @@ class lidar_Dataset(Dataset):
                 choice_indx = np.random.randint(0, now_pt_num, size = [self.point_num - now_pt_num])
                 human_points = torch.cat([human_points, human_points[choice_indx]], dim = 0)
                 seg_label = torch.cat([seg_label, seg_label[choice_indx]], dim = 0)
-        # import pdb; pdb.set_trace()
+        
         if self.is_train and self.augmentation:
-            human_points, smpl_joints, root, smpl_verts = self.augment(human_points, smpl_joints, root, smpl_verts)
+            human_points, smpl_joints, root, smpl_verts, angle = self.augment(human_points, smpl_joints, root, smpl_verts)
+            R_aug = torch.tensor([[np.cos(angle), -np.sin(angle), 0], [np.sin(angle), np.cos(angle), 0], [0, 0, 1]]).float()
+            R_global = batch_rodrigues(torch.tensor(mesh_dict['global_orient'].squeeze().float()))
+            R_global_now = R_aug @ R_global
+            global_orient = rotation_matrix_to_angle_axis(R_global_now.unsqueeze(0)).squeeze()
+        else:
+            global_orient = mesh_dict['global_orient']
+        
         smpl_joint_24 = self.joint_24_regressor @ smpl_verts.float()
         gt_trans = smpl_joint_24[0] - self.default_trans
         sample = {
@@ -168,7 +176,7 @@ class lidar_Dataset(Dataset):
             'smpl_joints24_local' : (smpl_joint_24 - root).float(),#.to(self.device),
             'vis_label' : vis_label_kpts.float(),
             'seg_label' : seg_label.long(),
-            'smpl_pose': torch.tensor(np.concatenate([mesh_dict['global_orient'], mesh_dict['body_pose']], axis = -1)).float(),
+            'smpl_pose': torch.tensor(np.concatenate([global_orient, mesh_dict['body_pose']], axis = -1)).float(),
             'betas': torch.tensor(mesh_dict['betas']).float(),
             'has_3d_joints': 1,
             'has_smpl': 1,
@@ -176,7 +184,6 @@ class lidar_Dataset(Dataset):
         }
         if self.load_v2v:
             location_dict = sam_data['location_dict']
-            # frame, time, id = location_dict['scene'], location_dict['time'], location_dict['id']
             if self.pred_mode == 'int':
                 frame, time, id = location_dict['scene'], location_dict['time'], location_dict['id']
             elif self.pred_mode =='str':
@@ -196,3 +203,4 @@ class lidar_Dataset(Dataset):
     
     def __len__(self):
         return len(self.valid_hkps) // self.interval
+        
