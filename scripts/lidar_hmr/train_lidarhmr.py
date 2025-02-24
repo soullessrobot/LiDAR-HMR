@@ -76,7 +76,7 @@ def train(model, dataloader, optimizer, epoch):
             if type(sample[key]) is not dict and type(sample[key]) is not list:
                 sample[key] = sample[key].cuda()
         pcd = sample['human_points_local']
-        torch.autograd.set_detect_anomaly(True)
+        # torch.autograd.set_detect_anomaly(True)
         optimizer.zero_grad()
 
         ret_dict = model(pcd)
