@@ -27,6 +27,10 @@ class lidar_Dataset(Dataset):
         self.point_num = 1024
         with open('smplx_models/smpl/SMPL_NEUTRAL.pkl', 'rb') as smpl_file:
             smpl_data = pickle.load(smpl_file, encoding='latin1')
+        self.human_model = smplx.create('smplx_models/', model_type = 'smpl',
+                                    gender='neutral', 
+                                    use_face_contour=False,
+                                    ext="npz")
         self.v_template = smpl_data['v_template']
         self.joint_24_regressor = torch.tensor(smpl_data['J_regressor'].todense()).float()
         self.default_trans = (self.joint_24_regressor @ self.v_template)[0]
@@ -159,11 +163,16 @@ class lidar_Dataset(Dataset):
             R_global = batch_rodrigues(torch.tensor(mesh_dict['global_orient'].squeeze().float()))
             R_global_now = R_aug @ R_global
             global_orient = rotation_matrix_to_angle_axis(R_global_now.unsqueeze(0)).squeeze()
+            smpl_mesh_no_trans = self.human_model(betas = torch.tensor(mesh_dict['betas']).float().unsqueeze(0), 
+                                            return_verts=True, 
+                                            body_pose=torch.tensor(mesh_dict['body_pose']).float().unsqueeze(0),
+                                            global_orient=global_orient.float().unsqueeze(0)).vertices[0]
+            gt_trans = (smpl_verts - smpl_mesh_no_trans).mean(dim = -2)
         else:
             global_orient = mesh_dict['global_orient']
+            gt_trans = mesh_dict['transl']
         
         smpl_joint_24 = self.joint_24_regressor @ smpl_verts.float()
-        gt_trans = smpl_joint_24[0] - self.default_trans
         sample = {
             'global_trans' : root.float(),
             'gt_trans' : (gt_trans - root).float(),
